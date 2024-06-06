@@ -6,14 +6,15 @@ import { GlobalErrorHandlingFilter } from './utils/exceptionsFilter/globalErrorH
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { errorMessageExtract } from './utils/errorMessageExtract';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{logger: ['debug', 'error', 'log', 'fatal'],});
   const  httpAdapter  = app.get(HttpAdapterHost);
+  app.setGlobalPrefix('api/v1');
   app.use(helmet())
   app.useGlobalFilters(new GlobalErrorHandlingFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe({
     stopAtFirstError:true,
     transform:true,
-    whitelist:true,
+    // whitelist:true,
     exceptionFactory:errorMessageExtract,
 
   }));

@@ -1,4 +1,4 @@
-import { IsArray, IsEmail, IsEnum, IsIn, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator';
+import { ArrayMinSize, IsArray, IsEmail, IsEnum, IsIn, IsNotEmpty, IsOptional, IsStrongPassword, Length, ValidateIf } from 'class-validator';
 import { GENDER ,ROLE} from 'src/constants/enum';
 
 export class UserDto {
@@ -14,7 +14,8 @@ export class UserDto {
   gender:GENDER
 
   @IsOptional()
-  @IsEnum(ROLE,{each:true})
   @IsArray()
-  role?:ROLE
+  @IsEnum(ROLE, { each: true })
+  @ArrayMinSize(1)
+  role?: ROLE[]; // Role is optional and can be undefined
 }

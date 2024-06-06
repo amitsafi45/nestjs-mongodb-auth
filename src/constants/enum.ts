@@ -9,3 +9,5 @@ export enum ROLE {
     Member = "Member",
     Super_Admin = "Super_Admin"
   }
+
+ export  const SALT_WORK_FACTOR = 10;
