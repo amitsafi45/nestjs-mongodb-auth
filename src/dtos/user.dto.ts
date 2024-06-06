@@ -19,3 +19,5 @@ export class UserDTO {
   @ArrayMinSize(1)
   role?: ROLE[]; // Role is optional and can be undefined
 }
+
+

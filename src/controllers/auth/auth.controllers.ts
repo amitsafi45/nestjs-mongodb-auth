@@ -1,12 +1,14 @@
-import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
+import { Body, Controller, HttpException, HttpStatus, Post, Res } from "@nestjs/common";
 import { Response } from "express";
+import { SignInDTO } from "src/dtos/signIn.dto";
 import { UserDTO} from "src/dtos/user.dto";
 import { TokenService } from "src/services/token.service";
 import { UserService } from "src/services/user.service";
-
+import * as bcrypt from 'bcrypt'
+import { ConfigService } from "@nestjs/config";
 @Controller('auth')
 export class AuthController{
-    constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService){}
+    constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService,private configService:ConfigService){}
     @Post('/sign-up')
     async create(@Body()body:UserDTO,@Res()res:Response){
       const isEmailAreadyExist=await this.userSerive.findOneByEmail(body.email)
@@ -23,4 +25,36 @@ export class AuthController{
         data:newUser
       })
     }
+
+    @Post('/sign-in')
+    async signIn(@Body()body:SignInDTO,@Res()res:Response){
+
+      const user=await this.userSerive.findOneByEmail(body.email.toLowerCase())
+      if(!user){
+       throw new HttpException("Email or Password Not Mactched",HttpStatus.BAD_REQUEST)
+    }
+     const {password,...payload}=user.toObject()
+    const checkPassword = await bcrypt.compare(body.password,password);
+    if (!checkPassword) {
+      throw new HttpException(
+        'Email or Password Not Mactched',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const token=await this.tokenSerive.tokenGenrated(payload)
+    
+    res.status(HttpStatus.ACCEPTED).json({
+      statusCode:HttpStatus.ACCEPTED,
+      message:"Sign-in Successfully",
+      data:{
+        user:payload,
+        token:{...token},
+        expire:{
+           accessIn:this.configService.get('ACCESS_TOKEN_EXPIRES_IN') ,
+           refreshIn:this.configService.get('REFRESH_TOKEN_EXPIRES_IN') 
+        }
+
+      }
+    })
+  }
 }

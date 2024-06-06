@@ -4,7 +4,7 @@ import { tokenProvider } from "../providers/token.provider";
 import { TokenService } from "src/services/token.service";
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule,],
   providers: [...tokenProvider,TokenService],
   exports:[...tokenProvider,TokenService]
 })
