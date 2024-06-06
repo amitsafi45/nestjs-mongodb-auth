@@ -6,7 +6,6 @@ import { envValidate } from './utils/envValidator';
 import { DatabaseModule } from './modules/database.module';
 import { AuthModule } from './modules/auth.module';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants/constant';
 
 @Module({
   imports: [ConfigModule.forRoot({

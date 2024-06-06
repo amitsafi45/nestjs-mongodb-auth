@@ -20,7 +20,6 @@ export class AuthController{
         }else{
             newUser= await this.userSerive.create(body)
         }
-      // const check=await this.tokenSerive.create({token:"sjdh",expiryDate:new Date(),user:newUser})
     return res.status(HttpStatus.ACCEPTED).json({
         statusCode:HttpStatus.ACCEPTED,
         message:"Sign-Up Successfully",
@@ -46,6 +45,7 @@ export class AuthController{
     const token=await this.tokenSerive.tokenGenrated(payload)
     const accessIn=this.jwtservice.decode(token.access)
     const refreshIn=this.jwtservice.decode(token.refresh)
+    await this.tokenSerive.create({token:token.refresh,expiryDate:new Date(refreshIn.exp*1000),userId:user})
     res.status(HttpStatus.ACCEPTED).json({
       statusCode:HttpStatus.ACCEPTED,
       message:"Sign-in Successfully",
