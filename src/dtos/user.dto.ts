@@ -1,7 +1,7 @@
 import { ArrayMinSize, IsArray, IsEmail, IsEnum, IsIn, IsNotEmpty, IsOptional, IsStrongPassword, Length, ValidateIf } from 'class-validator';
 import { GENDER ,ROLE} from 'src/constants/enum';
 
-export class UserDto {
+export class UserDTO {
   @IsEmail()
   email: string;
 

@@ -1,6 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
-import { UserDto } from './dtos/user.dto';
 
 @Controller()
 export class AppController {
