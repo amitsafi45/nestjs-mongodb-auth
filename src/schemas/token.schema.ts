@@ -8,12 +8,10 @@ export const TokenSchema = new mongoose.Schema({
     expiryDate: {
         type: Date,
         required: true,
-        alias:"expiry_date"
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Reference to the User model
-        alias:'user_id',
         require:true
     }
 }, { timestamps: true });
