@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const  httpAdapter  = app.get(HttpAdapterHost);
   app.use(helmet())
-  // app.useGlobalFilters(new GlobalErrorHandlingFilter(httpAdapter));
+  app.useGlobalFilters(new GlobalErrorHandlingFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe({
     stopAtFirstError:true,
     transform:true,

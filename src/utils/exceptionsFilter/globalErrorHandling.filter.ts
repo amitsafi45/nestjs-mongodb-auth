@@ -16,14 +16,12 @@ export class GlobalErrorHandlingFilter implements ExceptionFilter{
     const responseBody = {
       statusCode: httpStatus,
       success:false,
-      message:"exception.message"
+      message:exception.message
     };
      //   timestamp: new Date().toISOString(),
     //   path: httpAdapter.getRequestUrl(ctx.getRequest()),
     //   ip:httpAdapter.getRequestHostname(ctx.getRequest()),
 
-    // httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
-  return  ctx.getNext()
-               
+    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
     }
 }
