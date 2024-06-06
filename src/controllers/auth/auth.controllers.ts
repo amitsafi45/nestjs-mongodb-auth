@@ -6,9 +6,11 @@ import { TokenService } from "src/services/token.service";
 import { UserService } from "src/services/user.service";
 import * as bcrypt from 'bcrypt'
 import { ConfigService } from "@nestjs/config";
+import { decode } from "querystring";
+import { JwtService } from "@nestjs/jwt";
 @Controller('auth')
 export class AuthController{
-    constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService,private configService:ConfigService){}
+    constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService,private configService:ConfigService,private jwtservice:JwtService){}
     @Post('/sign-up')
     async create(@Body()body:UserDTO,@Res()res:Response){
       const isEmailAreadyExist=await this.userSerive.findOneByEmail(body.email)
@@ -42,7 +44,8 @@ export class AuthController{
       );
     }
     const token=await this.tokenSerive.tokenGenrated(payload)
-    
+    const accessIn=this.jwtservice.decode(token.access)
+    const refreshIn=this.jwtservice.decode(token.refresh)
     res.status(HttpStatus.ACCEPTED).json({
       statusCode:HttpStatus.ACCEPTED,
       message:"Sign-in Successfully",
@@ -50,8 +53,8 @@ export class AuthController{
         user:payload,
         token:{...token},
         expire:{
-           accessIn:this.configService.get('ACCESS_TOKEN_EXPIRES_IN') ,
-           refreshIn:this.configService.get('REFRESH_TOKEN_EXPIRES_IN') 
+           accessIn:accessIn.exp ,
+           refreshIn:refreshIn.exp 
         }
 
       }
