@@ -11,8 +11,10 @@ export class AuthenticationMiddleware implements NestMiddleware {
         const accessToken = req.get('authorization').replace('Bearer', '').trim();
         const user=await this.jwtService.verifyAsync(accessToken,{
         secret:this.configService.get('ACCESS_SECRET_KEY')
-    })
-
+        
+    }
+)
+      req[user]=user
        return next()
     }catch(error){
         throw new HttpException("Unauthorized User",HttpStatus.UNAUTHORIZED)

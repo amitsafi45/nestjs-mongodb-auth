@@ -10,7 +10,7 @@ import { decode } from "querystring";
 import { JwtService } from "@nestjs/jwt";
 @Controller('auth')
 export class AuthController{
-    constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService,private configService:ConfigService,private jwtservice:JwtService){}
+    constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService,private jwtservice:JwtService){}
     @Post('/sign-up')
     async create(@Body()body:UserDTO,@Res()res:Response){
       const isEmailAreadyExist=await this.userSerive.findOneByEmail(body.email)
