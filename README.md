@@ -36,27 +36,20 @@ $ yarn install
 
 ```bash
 # development
-$ yarn run start
+$ yarn start:dev
 
-# watch mode
-$ yarn run start:dev
+## env setting
+$ PORT=3000
+$ DB_URL=
+$ REFRESH_SECRET_KEY=
+$ ACCESS_SECRET_KEY=
+$ REFRESH_TOKEN_EXPIRES_IN=
+$ ACCESS_TOKEN_EXPIRES_IN=
+$ THROTTLE_TTL=
+$ THROTTLE_LIMIT=
 
-# production mode
-$ yarn run start:prod
-```
 
-## Test
 
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
 
 ## Support
 
