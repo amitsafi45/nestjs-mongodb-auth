@@ -1,9 +1,14 @@
-import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
+import { ROLE } from "src/constants/enum";
+import { AuthorizationGuard } from "src/utils/guard/authorization.guard";
+import { Roles } from "src/utils/roles.decorator";
 
 @Controller('/test')
 export class TestController{
     @Get('/admin')
+    @UseGuards(AuthorizationGuard)
+    @Roles([ROLE.Admin])
     async adminApi(@Res()res:Response){
         res.status(HttpStatus.ACCEPTED).json({
             statusCode:HttpStatus.ACCEPTED,
@@ -11,6 +16,8 @@ export class TestController{
           })
     }
     @Get('/member')
+    @UseGuards(AuthorizationGuard)
+    @Roles([ROLE.Member])
     async memberApi(@Res()res:Response){
         res.status(HttpStatus.ACCEPTED).json({
             statusCode:HttpStatus.ACCEPTED,
@@ -19,6 +26,8 @@ export class TestController{
     }
 
     @Get('/super-admin')
+    @UseGuards(AuthorizationGuard)
+    @Roles([ROLE.Super_Admin])
     async superAdminApi(@Res()res:Response){
         res.status(HttpStatus.ACCEPTED).json({
             statusCode:HttpStatus.ACCEPTED,

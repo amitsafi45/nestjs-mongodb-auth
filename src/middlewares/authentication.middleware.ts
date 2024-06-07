@@ -14,7 +14,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
         
     }
 )
-      req[user]=user
+      req["user"]=user
        return next()
     }catch(error){
         throw new HttpException("Unauthorized User",HttpStatus.UNAUTHORIZED)
