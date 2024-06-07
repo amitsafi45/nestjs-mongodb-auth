@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { GlobalErrorHandlingFilter } from './utils/exceptionsFilter/globalErrorHandling.filter';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { errorMessageExtract } from './utils/errorMessageExtract';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule,{logger: ['debug', 'error', 'log', 'fatal'],});
   const  httpAdapter  = app.get(HttpAdapterHost);
@@ -18,6 +19,15 @@ async function bootstrap() {
     exceptionFactory:errorMessageExtract,
 
   }));
+  const config = new DocumentBuilder()
+  .setTitle('Auth')
+  .setDescription('Authentication & Authorization')
+  .setVersion('1.0')
+  .addTag('Authentication & Authorization')
+  .addBearerAuth()
+  .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
   const PORT_NUMBER=app.get(ConfigService).get('PORT')
 
   await app.listen(PORT_NUMBER,()=>{

@@ -1,18 +1,30 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { ArrayMinSize, IsArray, IsEmail, IsEnum, IsIn, IsNotEmpty, IsOptional, IsStrongPassword, Length, ValidateIf } from 'class-validator';
 import { GENDER ,ROLE} from 'src/constants/enum';
 
 export class UserDTO {
+  @ApiProperty()
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsStrongPassword()
   password: string;
 
+  @ApiProperty({
+    enum: GENDER,
+  })
   @IsNotEmpty()
   @IsEnum(GENDER)
   gender:GENDER
 
+  @ApiProperty({
+    type: 'array',
+    enum: ROLE,
+    example: [ROLE.Admin,ROLE.Member,ROLE.Super_Admin],
+    required:false
+  })
   @IsOptional()
   @IsArray()
   @IsEnum(ROLE, { each: true })

@@ -1,10 +1,12 @@
 import { Controller, Get, HttpStatus, Res, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { ROLE } from "src/constants/enum";
 import { AuthorizationGuard } from "src/utils/guard/authorization.guard";
 import { Roles } from "src/utils/roles.decorator";
 
 @Controller('/test')
+@ApiBearerAuth()
 export class TestController{
     @Get('/admin')
     @UseGuards(AuthorizationGuard)

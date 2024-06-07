@@ -5,13 +5,14 @@ import { UserDTO} from "src/dtos/user.dto";
 import { TokenService } from "src/services/token.service";
 import { UserService } from "src/services/user.service";
 import * as bcrypt from 'bcrypt'
-import { ConfigService } from "@nestjs/config";
-import { decode } from "querystring";
 import { JwtService } from "@nestjs/jwt";
+import { ApiBody } from "@nestjs/swagger";
 @Controller('auth')
+
 export class AuthController{
     constructor(private readonly userSerive:UserService,private readonly tokenSerive:TokenService,private jwtservice:JwtService){}
     @Post('/sign-up')
+    @ApiBody({ type: UserDTO})
     async create(@Body()body:UserDTO,@Res()res:Response){
       const isEmailAreadyExist=await this.userSerive.findOneByEmail(body.email)
       let newUser={}
