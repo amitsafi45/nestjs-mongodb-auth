@@ -7,31 +7,34 @@ import { ValidationPipe } from '@nestjs/common';
 import { errorMessageExtract } from './utils/errorMessageExtract';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule,{logger: ['debug', 'error', 'log', 'fatal'],});
-  const  httpAdapter  = app.get(HttpAdapterHost);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['debug', 'error', 'log', 'fatal'],
+  });
+  const httpAdapter = app.get(HttpAdapterHost);
   app.setGlobalPrefix('api/v1');
-  app.use(helmet())
+  app.use(helmet());
   app.useGlobalFilters(new GlobalErrorHandlingFilter(httpAdapter));
-  app.useGlobalPipes(new ValidationPipe({
-    stopAtFirstError:true,
-    transform:true,
-    // whitelist:true,
-    exceptionFactory:errorMessageExtract,
-
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      stopAtFirstError: true,
+      transform: true,
+      // whitelist:true,
+      exceptionFactory: errorMessageExtract,
+    }),
+  );
   const config = new DocumentBuilder()
-  .setTitle('Auth')
-  .setDescription('Authentication & Authorization')
-  .setVersion('1.0')
-  .addTag('Authentication & Authorization')
-  .addBearerAuth()
-  .build();
+    .setTitle('Auth')
+    .setDescription('Authentication & Authorization')
+    .setVersion('1.0')
+    .addTag('Authentication & Authorization')
+    .addBearerAuth()
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  const PORT_NUMBER=app.get(ConfigService).get('PORT')
+  const PORT_NUMBER = app.get(ConfigService).get('PORT');
 
-  await app.listen(PORT_NUMBER,()=>{
-    console.log(`Server listening at http://localhost:${PORT_NUMBER}`)
+  await app.listen(PORT_NUMBER, () => {
+    console.log(` api docs-> http://localhost:${PORT_NUMBER}/api`);
   });
 }
 bootstrap();
