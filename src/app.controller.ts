@@ -1,11 +1,13 @@
 import { Body, Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
+import { SkipThrottle } from '@nestjs/throttler';
 
-@Controller()
+@SkipThrottle()
+@Controller('/ping')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/ping')
+  @Get('/')
   getPing(): string {
     return this.appService.getPing();
   }
