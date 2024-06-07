@@ -20,13 +20,22 @@ export class TokenService{
         })
     }
 
-    async tokenGenrated(payload:Partial<UserDTO>):Promise<{access:string,refresh:string}>{
+    async tokenGenrated(payload):Promise<{access:string,refresh:string}>{
 
-        return {access: await this.jwtService.signAsync(payload,{
+        return {access: await this.jwtService.signAsync({
+            sub: payload._id,
+            email: payload.email,
+            role: payload.role,
+        },{
             secret: this.configService.get('ACCESS_SECRET_KEY'),
             expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRES_IN')
-        }),
-        refresh: await this.jwtService.signAsync(payload,{
+        }), 
+        refresh: await this.jwtService.signAsync({
+            sub: payload._id,
+            email: payload.email,
+            role: payload.role,
+
+        },{
             secret: this.configService.get('REFRESH_SECRET_KEY'),
             expiresIn: this.configService.get('REFRESH_TOKEN_EXPIRES_IN'),
         })}
