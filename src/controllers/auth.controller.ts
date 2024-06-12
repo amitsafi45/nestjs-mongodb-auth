@@ -61,7 +61,7 @@ export class AuthController {
     await this.tokenSerive.create({
       token: token.refresh,
       expiryDate: new Date(refreshIn.exp * 1000),
-      userId: user,
+      userId:Object(user._id),
     });
     res.status(HttpStatus.ACCEPTED).json({
       statusCode: HttpStatus.ACCEPTED,

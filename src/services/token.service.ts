@@ -4,11 +4,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import { UserDTO } from 'src/dtos/user.dto';
 import { IToken } from 'src/interfaces/token.interface';
-
+import { InjectModel } from '@nestjs/mongoose';
+import { Token } from 'src/schemas/token.schema';
 @Injectable()
 export class TokenService {
   constructor(
-    @Inject('TOKEN_MODEL') private tokenModel: Model<IToken>,
+    @InjectModel('TOKEN_MODEL') private tokenModel: Model<Token>,
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
