@@ -1,58 +1,87 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# NestJS Authentication & Authorization Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A backend service using NestJS with role-based authentication, MongoDB, error handling, rate limiting, and throttling.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **Role-Based Authentication**: JWT-based access control with roles like Admin, Member, and Super_Admin.
+- **MongoDB Integration**: Stores user data.
+- **Error Handling**: Centralized error management.
+- **Rate Limiting & Throttling**: Prevents abuse.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Endpoints
 
-## Installation
+### Sign Up
 
-```bash
-$ yarn install
+**POST /auth/sign-up**  
+Registers a user with an email, password, gender, and role.
+
+**Request Body**:
+```json
+{
+  "email": "string",
+  "password": "string",
+  "gender": "Male",  // or "Female"
+  "role": [
+    "Admin",        // or "Member", "Super_Admin"
+    "Member",
+    "Super_Admin"
+  ]
+}
 ```
 
-## Running the app
+**Responses**:
+- `201 Created`: User created successfully.
+- `400 Bad Request`: Validation error.
 
-```bash
-# development
-$ yarn start:dev
+### Sign In / Login
 
-## env setting
-$ PORT=3000
-$ DB_URL=
-$ REFRESH_SECRET_KEY=
-$ ACCESS_SECRET_KEY=
-$ REFRESH_TOKEN_EXPIRES_IN=
-$ ACCESS_TOKEN_EXPIRES_IN=
-$ THROTTLE_TTL=
-$ THROTTLE_LIMIT=
+**POST /auth/sign-in**
+Authenticates and returns JWT tokens.
 
+**Request Body**:
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
 
+**Responses**:
+- `200 OK`: Tokens returned.
+- `401 Unauthorized`: Invalid credentials.
 
+## Environment Variables
 
+Create a `.env` file with:
 
+```env
+PORT=3000
+DB_URL=your_mongodb_connection_string
+REFRESH_SECRET_KEY=your_refresh_secret_key
+ACCESS_SECRET_KEY=your_access_secret_key
+REFRESH_TOKEN_EXPIRES_IN=7d
+ACCESS_TOKEN_EXPIRES_IN=1h
+THROTTLE_TTL=60s
+THROTTLE_LIMIT=100
+```
 
-## License
+## Setup
 
-Nest is [MIT licensed](LICENSE).
+1. Clone the repo:
+
+   ```bash
+   git clone https://github.com/amitsafi45/interview_task_backend.git
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Configure `.env` and start the server:
+
+   ```bash
+   npm run start
+   ```
